@@ -44,4 +44,9 @@
     "[yaml]": {
         "editor.defaultFormatter": "redhat.vscode-yaml"
     },
+    "git.branchProtectionPrompt": "alwaysCommitToNewBranch",
+    "git.branchProtection": [
+        "main",
+        "master"
+    ],
 }
