@@ -5,5 +5,7 @@
         "eamodio.gitlens",
         "pkief.material-icon-theme",
         "exodiusstudios.comment-anchors",
+        "teledemic.branch-warnings",
+        "github.vscode-pull-request-github",
     ]
 }
