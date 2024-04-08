@@ -1,23 +1,9 @@
 import "reflect-metadata";
 
-import { Type } from "class-transformer";
-import {
-    ArrayNotEmpty,
-    IsArray,
-    IsBoolean,
-    IsDefined,
-    IsEmail,
-    IsMongoId,
-    IsNotEmptyObject,
-    IsObject,
-    IsOptional,
-    IsString,
-    ValidateNested,
-} from "class-validator";
+import { ArrayNotEmpty, IsArray, IsBoolean, IsEmail, IsMongoId, IsOptional, IsString } from "class-validator";
 import { Schema } from "mongoose";
 
 // import { Match } from "./match.decorator";
-import AddressDto from "./address.dto";
 import IUser from "./user.interface";
 
 export default class CreateUserDto implements IUser {
@@ -40,13 +26,6 @@ export default class CreateUserDto implements IUser {
     @IsOptional()
     email_verified: boolean;
 
-    @IsBoolean()
-    auto_login: boolean;
-
-    @IsOptional()
-    @IsString()
-    picture: string;
-
     @IsString()
     password: string;
 
@@ -56,26 +35,4 @@ export default class CreateUserDto implements IUser {
     @ArrayNotEmpty()
     @IsString({ each: true })
     roles: string[];
-
-    // For validating nested object you must import reflect-metadata and define @Type:
-    @IsDefined()
-    @IsNotEmptyObject()
-    @IsObject()
-    @ValidateNested()
-    @Type(() => AddressDto)
-    address: AddressDto;
-
-    @IsOptional()
-    @IsArray()
-    @ValidateNested({ each: true })
-    @IsMongoId()
-    @Type(() => Schema.Types.ObjectId)
-    recipe_id: Schema.Types.ObjectId[];
-
-    @IsOptional()
-    @IsArray()
-    @ValidateNested({ each: true })
-    @IsMongoId()
-    @Type(() => Schema.Types.ObjectId)
-    post_id: Schema.Types.ObjectId[];
 }
