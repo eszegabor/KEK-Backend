@@ -10,11 +10,11 @@ import { IsString } from "class-validator";
  *        email:
  *          type: string
  *          description: 'A felhasználó e-mail címe'
- *          example: 'student001@jedlik.eu'
+ *          example: 'esze.gabor@students.jedlik.eu'
  *        password:
  *          type: string
  *          description: 'A felhasználó jelszava'
- *          example: 'student01'
+ *          example: 'gabor'
  *
  */
 export default class LogInDto {
