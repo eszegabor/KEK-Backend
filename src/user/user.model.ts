@@ -1,6 +1,5 @@
 import { model, Schema } from "mongoose";
 
-import addressSchema from "./address.schema";
 import IUser from "./user.interface";
 
 // LINK ./user.model.yml
@@ -15,18 +14,12 @@ const userSchema = new Schema<IUser>(
             type: Boolean,
             required: true,
         },
-        auto_login: {
-            type: Boolean,
-            required: true,
-        },
+
         name: {
             type: String,
             required: true,
         },
-        picture: {
-            type: String,
-            required: true,
-        },
+
         password: {
             type: String,
             required: true,
@@ -35,29 +28,20 @@ const userSchema = new Schema<IUser>(
             type: [String], // Array of string
             required: true,
         },
-        address: {
-            type: addressSchema,
+        mobil_number: {
+            type: String,
             required: true,
         },
-        post_id: [{ type: Schema.Types.ObjectId, ref: "Post" }],
-        recipe_id: [{ type: Schema.Types.ObjectId, ref: "Recipe" }],
     },
     { versionKey: false, id: false, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );
 
-userSchema.virtual("recipes", {
-    ref: "Recipe",
-    localField: "recipe_id",
-    foreignField: "_id",
-    justOne: false,
-});
-
-userSchema.virtual("posts", {
-    ref: "Post",
-    localField: "post_id",
-    foreignField: "_id",
-    justOne: false,
-});
+// userSchema.virtual("recipes", {
+//     ref: "Recipe",
+//     localField: "recipe_id",
+//     foreignField: "_id",
+//     justOne: false,
+// });
 
 const userModel = model<IUser>("User", userSchema, "users");
 
