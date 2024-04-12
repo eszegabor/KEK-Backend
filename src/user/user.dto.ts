@@ -1,6 +1,6 @@
 import "reflect-metadata";
 
-import { ArrayNotEmpty, IsArray, IsBoolean, IsEmail, IsMongoId, IsOptional, IsString } from "class-validator";
+import { IsEmail, IsMongoId, IsOptional, IsString } from "class-validator";
 import { Schema } from "mongoose";
 
 // import { Match } from "./match.decorator";
@@ -22,17 +22,17 @@ export default class CreateUserDto implements IUser {
     // @Match("email", { message: "email and email_address_confirm don't match." })
     // public email_address_confirm: string;
 
-    @IsBoolean()
-    @IsOptional()
-    email_verified: boolean;
+    // @IsBoolean()
+    // @IsOptional()
+    // email_verified: boolean;
 
     @IsString()
     password: string;
 
     // roles set ["user"] in handler registration
     // @IsOptional()
-    @IsArray()
-    @ArrayNotEmpty()
-    @IsString({ each: true })
-    roles: string[];
+    // @IsArray()
+    // @ArrayNotEmpty()
+    // @IsString({ each: true })
+    // roles: string[];
 }
