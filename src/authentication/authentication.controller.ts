@@ -130,10 +130,7 @@ export default class AuthenticationController implements IController {
                     .send(msg)
                     .then(response => {
                         next(
-                            new HttpException(
-                                response[0].statusCode,
-                                `A verification e-mail has been sent to ${user.email}, It will be expire after one day. Headers: ${response[0].headers}`,
-                            ),
+                            new HttpException(response[0].statusCode, `A verification e-mail has been sent to ${user.email}, It will be expire after one day.`),
                         );
                     })
                     .catch(error => {
@@ -220,7 +217,7 @@ export default class AuthenticationController implements IController {
                             next(
                                 new HttpException(
                                     response[0].statusCode,
-                                    `A verification e-mail has been sent to ${user.email}, It will be expire after one day. Headers: ${response[0].headers}`,
+                                    `A verification e-mail has been sent to ${user.email}, It will be expire after one day.`,
                                 ),
                             );
                         })
