@@ -5,7 +5,7 @@ import IUser from "./user.interface";
 // LINK ./user.model.yml
 const userSchema = new Schema<IUser>(
     {
-        // _id: Schema.Types.ObjectId,
+        _id: Schema.Types.ObjectId,
         email: {
             type: String,
             required: true,

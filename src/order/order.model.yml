@@ -1,0 +1,14 @@
+# LINK ./order.model.ts
+components:
+    schemas:
+        Order:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    description: "A rendelés elsődleges kulcsa (ObjectId)"
+                    example: "d12345678901234567890123"
+                offer_id:
+                    type: string
+                    description: "A felajánlás kulcsa"
+                

@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response, Router } from "express";
-import ISession from "interfaces/session.interface";
 import { Types } from "mongoose";
 
 // import authorModel from "../author/author.model";
@@ -7,7 +6,6 @@ import HttpException from "../exceptions/Http.exception";
 import IdNotValidException from "../exceptions/IdNotValid.exception";
 import UserNotFoundException from "../exceptions/UserNotFound.exception";
 import IController from "../interfaces/controller.interface";
-import IRequestWithUser from "../interfaces/requestWithUser.interface";
 import authMiddleware from "../middleware/auth.middleware";
 import validationMiddleware from "../middleware/validation.middleware";
 import postModel from "../post/post.model";
@@ -28,46 +26,14 @@ export default class UserController implements IController {
 
     private initializeRoutes() {
         // this.router.get(`${this.path}/posts/:id`, authMiddleware, this.getAllPostsOfUserByID);
-        this.router.get(`${this.path}/posts/`, authMiddleware, this.getAllPostsOfLoggedUser);
         this.router.get(`${this.path}/:id`, authMiddleware, this.getUserById);
         this.router.get(this.path, authMiddleware, this.getAllUsers);
-        this.router.get(`${this.path}/posts/search/:keyword`, this.getUsersPostsWithSearch);
-
         this.router.patch(`${this.path}/:id`, [authMiddleware, validationMiddleware(CreateUserDto, true)], this.modifyUser);
-
         this.router.delete(`${this.path}/:id`, authMiddleware, this.deleteUser);
     }
 
-    /**
-     * @openapi
-     * /users:
-     *  get:
-     *    tags:
-     *      - Users
-     *    security: []
-     *    summary: Az összes felhasználó lekérdezése
-     *    description: A végpont az összes felhasználót kérdezi le
-     *    responses:
-     *      '200':
-     *        description: OK.
-     *        content:
-     *          application/json:
-     *            schema:
-     *                $ref: '#/components/schemas/User'
-     *        headers:
-     *           x-total-count:
-     *              description: A felhasználók száma
-     *              schema:
-     *                type: number
-     *                example: 3
-     *      '4XX':
-     *        description: Hiba
-     *        content:
-     *          application/json:
-     *            schema:
-     *                $ref: '#/components/schemas/Error'
-     *
-     */
+    // LINK ./user.controller.yml#getAllUsers
+    // ANCHOR[id=getAllUsers]
     private getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const count = await this.user.countDocuments();
@@ -84,6 +50,8 @@ export default class UserController implements IController {
         }
     };
 
+    // LINK ./user.controller.yml#getUserById
+    // ANCHOR[id=getUserById]
     private getUserById = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = req.params.id;
@@ -95,7 +63,7 @@ export default class UserController implements IController {
 
                 // Multiple populates:
                 // const user = await this.user.findById(id).populate("recipes").populate("recipes");
-                const user = await this.user.findById(id).populate("recipes");
+                const user = await this.user.findById(id);
                 if (user) {
                     res.send(user);
                 } else {
@@ -141,57 +109,6 @@ export default class UserController implements IController {
             } else {
                 next(new IdNotValidException(id));
             }
-        } catch (error) {
-            next(new HttpException(400, error.message));
-        }
-    };
-
-    private getAllPostsOfLoggedUser = async (req: IRequestWithUser, res: Response, next: NextFunction) => {
-        try {
-            const id = (req.session as ISession).user_id; // Stored user's ID in Cookie
-            const posts = await this.post.find({ user_id: id });
-            res.send(posts);
-        } catch (error) {
-            next(new HttpException(400, error.message));
-        }
-    };
-
-    // private getAllPostsOfUserByID = async (req: Request, res: Response, next: NextFunction) => {
-    //     try {
-    //         if (Types.ObjectId.isValid(req.params.id)) {
-    //             const id: string = req.params.id;
-    //             const posts = await this.author.find({ user_id: id }).select("-user_id").populate("post", "-_id");
-    //             res.send(posts);
-    //         } else {
-    //             next(new IdNotValidException(req.params.id));
-    //         }
-    //     } catch (error) {
-    //         next(new HttpException(400, error.message));
-    //     }
-    // };
-
-    private getUsersPostsWithSearch = async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const myRegex = new RegExp(req.params.keyword, "i"); // "i" for case-insensitive
-
-            const data = await this.user.aggregate([
-                {
-                    $lookup: { from: "authors", foreignField: "user_id", localField: "_id", as: "author" },
-                },
-                {
-                    $lookup: { from: "posts", foreignField: "_id", localField: "author.post_id", as: "post" },
-                },
-                {
-                    $match: { $and: [{ "address.street": myRegex }, { "post.content": myRegex }] },
-                    // $match: { "FK_neve.field1": req.params.keyword },
-                },
-                // {
-                //     // convert array of objects to simple array (alias name):
-                //     $unwind: "$FK_neve",
-                // },
-                { $project: { name: 1, "address.street": 1, post: 1 } },
-            ]);
-            res.send(data);
         } catch (error) {
             next(new HttpException(400, error.message));
         }
