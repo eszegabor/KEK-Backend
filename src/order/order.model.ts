@@ -25,7 +25,7 @@ const orderProductSchema = new Schema<IOrderProduct>({
     },
 });
 
-// LINK ./recipe.model.yml
+// LINK ./order.model.yml
 const orderSchema = new Schema<IOrder>(
     {
         // _id: Schema.Types.ObjectId,
