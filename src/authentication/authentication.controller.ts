@@ -31,7 +31,11 @@ export default class AuthenticationController implements IController {
 
     private initializeRoutes() {
         this.router.get("/", (req: Request, res: Response) => {
-            res.send("kek-backend API - Swagger: <a href='https://kek-backend.cyclic.app/docs'>https://kek-backend.cyclic.app/docs</a>");
+            if (process.env.NODE_ENV == "deployment") {
+                res.send("kek-backend API - Swagger: <a href='https://kek-backend.cyclic.app/docs'>https://kek-backend.cyclic.app/docs</a>");
+            } else {
+                res.send("kek-backend API - Swagger: <a href='http://localhost:5000/docs'>http://localhost:5000/docs</a>");
+            }
         });
         this.router.post(`${this.path}/register`, validationMiddleware(CreateUserDto), this.registration);
         this.router.post(`${this.path}/login`, validationMiddleware(LogInDto), this.login);
