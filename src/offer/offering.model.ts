@@ -1,12 +1,14 @@
 import { model, Schema } from "mongoose";
 
-import IOffering from "./offer.interface";
+import IOffering from "./offering.interface";
 import IOfferingProduct from "./offeringProduct.interface";
+
+// LINK ./offering.model.yml
 
 const offeringProductSchema = new Schema<IOfferingProduct>({
     product_id: {
         type: Schema.Types.ObjectId,
-        ref: "Order",
+        ref: "offering",
     },
     unit: {
         type: String,
@@ -27,7 +29,7 @@ const offeringProductSchema = new Schema<IOfferingProduct>({
 const offeringSchema = new Schema<IOffering>(
     {
         // _id: Schema.Types.ObjectId,
-        _id: { type: Schema.Types.ObjectId, ref: "User" },
+        _id: { type: Schema.Types.ObjectId, ref: "offering" },
         product_objs: [offeringProductSchema],
         offer_date: {
             type: Date,
@@ -37,6 +39,6 @@ const offeringSchema = new Schema<IOffering>(
     { versionKey: false, id: false, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );
 
-const orderModel = model<IOffering>("Order", offeringSchema, "orders");
+const offeringModel = model<IOffering>("offering", offeringSchema, "offering");
 
-export default orderModel;
+export default offeringModel;
