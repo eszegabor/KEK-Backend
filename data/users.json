@@ -1,214 +1,54 @@
 [
     {
         "_id": {
-            "$oid": "a11111111111111111111111"
+            "$oid": "aaaa00000000000000000001"
         },
-        "address": {
-            "city": "Győr",
-            "country": "Hungary",
-            "street": "Futrinka utca 13.",
-            "_id": {
-                "$oid": "b11111111111111111111111"
-            }
-        },
-        "email": "student001@jedlik.eu",
+        "email": "esze.gabor@students.jedlik.eu",
         "email_verified": true,
-        "auto_login": true,
-        "name": "student001",
-        "picture": "https://lh3.googleusercontent.com/a/ALm5wu1tqlumAaDE2djCuUE2s4ubsOs6HOkdwfU6ftci=s96-c",
-        "password": "$2b$10$9Czj8XCCZ6Wg5h9HSngl2eMqAO0Pk/LFmf.LrfeLKDXsBQaI07Pv.",
+        "name": "Esze Gábor",
+        "password": "$2b$10$Nkwn9WPdaPAnQNRr7/9hz.C1MnQB/1laNDb5SnHOGnFOeyGxNoDdy",
         "roles": [
-            "user",
-            "admin"
+            "user", "admin"
         ],
-        "recipe_id": [
-            {
-                "$oid": "d22222222222222222222222"
-            },
-            {
-                "$oid": "d44444444444444444444444"
-            },
-            {
-                "$oid": "d77777777777777777777777"
-            },
-            {
-                "$oid": "d88888888888888888888888"
-            }
-        ],
-        "post_id": [
-            {
-                "$oid": "c11111111111111111111111"
-            },
-            {
-                "$oid": "c22222222222222222222222"
-            },
-            {
-                "$oid": "c33333333333333333333333"
-            },
-            {
-                "$oid": "c55555555555555555555555"
-            },
-            {
-                "$oid": "c66666666666666666666666"
-            },
-            {
-                "$oid": "c77777777777777777777777"
-            },
-            {
-                "$oid": "c88888888888888888888888"
-            },
-            {
-                "$oid": "c99999999999999999999999"
-            },
-            {
-                "$oid": "caaaaaaaaaaaaaaaaaaaaaaa"
-            },
-            {
-                "$oid": "cbbbbbbbbbbbbbbbbbbbbbbb"
-            },
-            {
-                "$oid": "cccccccccccccccccccccccc"
-            },
-            {
-                "$oid": "cddddddddddddddddddddddd"
-            },
-            {
-                "$oid": "ceeeeeeeeeeeeeeeeeeeeeee"
-            },
-            {
-                "$oid": "cfffffffffffffffffffffff"
-            }
-        ]
+        "mobil_number": "+36204841961"
     },
     {
         "_id": {
-            "$oid": "a22222222222222222222222"
+            "$oid": "aaaa00000000000000000003"
         },
-        "address": {
-            "city": "Tét",
-            "country": "Hungary",
-            "street": "Petőfi Sándor utca 007.",
-            "_id": {
-                "$oid": "b22222222222222222222222"
-            }
-        },
-        "email": "student002@jedlik.eu",
+        "email": "horvat.gabor@students.jedlik.eu",
         "email_verified": true,
-        "auto_login": false,
-        "name": "student002",
-        "picture": "https://lh3.googleusercontent.com/a/ALm5wu1tqlumAaDE2djCuUE2s4ubsOs6HOkdwfU6ftci=s96-c",
-        "password": "$2b$10$9Czj8XCCZ6Wg5h9HSngl2eMqAO0Pk/LFmf.LrfeLKDXsBQaI07Pv.",
+        "name": "Horvát Gábor",
+        "password": "$2b$10$WeX5FSIfYtRmECRnO6KoPuTTDRLRkvBr9S6rgeM9WM6WpJvHWiFyq",
+        "roles": [
+            "user", "admin"
+        ],
+        "mobil_number": "+36309876543"
+    },
+    {
+        "_id": {
+            "$oid": "aaaa00000000000000000002"
+        },
+        "email": "nits.laszlo@jedlik.eu",
+        "email_verified": true,
+        "name": "Nits László",
+        "password": "$2b$10$JUygvHBmTHNiYpJ/AftHyuyZK7fGUGImghlD3DLOUcuQjelDl.4EK",
+        "roles": [
+            "user", "admin"
+        ],
+        "mobil_number": "+36201234567"
+    },
+    {
+        "_id": {
+            "$oid": "aaaa00000000000000000100"
+        },
+        "email": "vevo1@jedlik.eu",
+        "email_verified": true,
+        "name": "Minta Vevő 1",
+        "password": "$2b$10$JUygvHBmTHNiYpJ/AftHyuyZK7fGUGImghlD3DLOUcuQjelDl.4EK",
         "roles": [
             "user"
         ],
-        "recipe_id": [
-            {
-                "$oid": "d33333333333333333333333"
-            },
-            {
-                "$oid": "d44444444444444444444444"
-            },
-            {
-                "$oid": "d55555555555555555555555"
-            },
-            {
-                "$oid": "d77777777777777777777777"
-            },
-            {
-                "$oid": "d99999999999999999999999"
-            }
-        ],
-        "post_id": [
-            {
-                "$oid": "c11111111111111111111111"
-            },
-            {
-                "$oid": "c22222222222222222222222"
-            },
-            {
-                "$oid": "c55555555555555555555555"
-            },
-            {
-                "$oid": "c66666666666666666666666"
-            },
-            {
-                "$oid": "c88888888888888888888888"
-            },
-            {
-                "$oid": "c99999999999999999999999"
-            },
-            {
-                "$oid": "caaaaaaaaaaaaaaaaaaaaaaa"
-            },
-            {
-                "$oid": "cbbbbbbbbbbbbbbbbbbbbbbb"
-            },
-            {
-                "$oid": "cddddddddddddddddddddddd"
-            },
-            {
-                "$oid": "ceeeeeeeeeeeeeeeeeeeeeee"
-            }
-        ]
-    },
-    {
-        "_id": {
-            "$oid": "a33333333333333333333333"
-        },
-        "address": {
-            "city": "Csopak",
-            "country": "Hungary",
-            "street": "Fürő utca 3.",
-            "_id": {
-                "$oid": "b33333333333333333333333"
-            }
-        },
-        "email": "student003@jedlik.eu",
-        "email_verified": true,
-        "auto_login": false,
-        "name": "student003",
-        "picture": "https://lh3.googleusercontent.com/a/ALm5wu1tqlumAaDE2djCuUE2s4ubsOs6HOkdwfU6ftci=s96-c",
-        "password": "$2b$10$9Czj8XCCZ6Wg5h9HSngl2eMqAO0Pk/LFmf.LrfeLKDXsBQaI07Pv.",
-        "roles": [
-            "user",
-            "admin"
-        ],
-        "recipe_id": [
-            {
-                "$oid": "d11111111111111111111111"
-            },
-            {
-                "$oid": "d33333333333333333333333"
-            },
-            {
-                "$oid": "d44444444444444444444444"
-            },
-            {
-                "$oid": "d66666666666666666666666"
-            },
-            {
-                "$oid": "daaaaaaaaaaaaaaaaaaaaaaa"
-            }
-        ],
-        "post_id": [
-            {
-                "$oid": "c11111111111111111111111"
-            },
-            {
-                "$oid": "c44444444444444444444444"
-            },
-            {
-                "$oid": "c55555555555555555555555"
-            },
-            {
-                "$oid": "c88888888888888888888888"
-            },
-            {
-                "$oid": "caaaaaaaaaaaaaaaaaaaaaaa"
-            },
-            {
-                "$oid": "cddddddddddddddddddddddd"
-            }
-        ]
+        "mobil_number": "+36701234567"
     }
 ]
