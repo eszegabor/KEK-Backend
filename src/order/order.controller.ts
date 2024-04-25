@@ -13,7 +13,7 @@ import CreateOrderDto from "./order.dto";
 import IOrder from "./order.interface";
 import orderModel from "./order.model";
 
-export default class RecipeController implements IController {
+export default class OrderController implements IController {
     public path = "/orders";
     public router = Router();
     private order = orderModel;
@@ -23,7 +23,7 @@ export default class RecipeController implements IController {
     }
 
     private initializeRoutes() {
-        this.router.get(this.path, authMiddleware, this.getAllOrders);
+        this.router.get(this.path, this.getAllOrders);
         this.router.get(`${this.path}/:id`, authMiddleware, this.getOrderById);
         this.router.patch(`${this.path}/:id`, [authMiddleware, validationMiddleware(CreateOrderDto, true)], this.modifyOrder);
         this.router.post(this.path, [authMiddleware, validationMiddleware(CreateOrderDto)], this.createOrder);
@@ -95,8 +95,8 @@ export default class RecipeController implements IController {
                 user_id: [uid],
             });
             const savedOrder = await createdOrder.save();
-            const count = await this.order.countDocuments();
-            res.append("x-total-count", `${count}`);
+            // const count = await this.order.countDocuments();
+            // res.append("x-total-count", `${count}`);
             res.send(savedOrder);
         } catch (error) {
             next(new HttpException(400, error.message));

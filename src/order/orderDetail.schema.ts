@@ -2,7 +2,7 @@ import { Schema } from "mongoose";
 
 import IOrderDetail from "./orderDetail.interface";
 
-// LINK ./orderProduct.model.yml
+// LINK ./orderDetail.schema.yml
 const orderDetailSchema = new Schema<IOrderDetail>({
     offer_id: {
         type: Schema.Types.ObjectId,
