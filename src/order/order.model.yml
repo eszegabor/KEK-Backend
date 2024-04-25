@@ -3,6 +3,7 @@ components:
     schemas:
         Order:
             type: object
+            required: [user_id, details]
             properties:
                 _id:
                     type: string

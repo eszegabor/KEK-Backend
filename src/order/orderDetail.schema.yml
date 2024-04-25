@@ -3,6 +3,7 @@ components:
   schemas:
     OrderDetail:
       type: object
+      required: [offer_id, product_id, quantity]
       properties:
         offer_id:
           type: string
