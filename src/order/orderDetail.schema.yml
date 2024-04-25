@@ -1,4 +1,4 @@
-# LINK ./orderDetail.model.ts
+# LINK ./orderDetail.schema.ts
 components:
   schemas:
     OrderDetail:

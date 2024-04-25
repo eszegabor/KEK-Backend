@@ -32,7 +32,7 @@
     # ANCHOR[id=createOrder]
     post:
         tags:
-            - Orderss
+            - Orders
         summary: Új rendelés létrehozása
         description: Új rendelés létrehozása a request body tartalma szerint
         requestBody:
