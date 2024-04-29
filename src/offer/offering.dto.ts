@@ -1,15 +1,16 @@
 import { ArrayNotEmpty, IsArray, IsMongoId, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { Schema } from "mongoose";
 
+import IOfferDetail from "./offerDetail.interface";
 import IOffering from "./offering.interface";
-import IOfferingProduct from "./offeringProduct.interface";
 
-export default class CreateofferingDto implements IOffering {
+export default class CreateOfferDto implements IOffering {
     @IsMongoId()
     @IsOptional()
     _id: Schema.Types.ObjectId;
 
     @IsNotEmpty()
+    @IsOptional()
     @IsMongoId()
     user_id: Schema.Types.ObjectId;
 
@@ -19,5 +20,5 @@ export default class CreateofferingDto implements IOffering {
 
     @IsArray()
     @ArrayNotEmpty()
-    product_objs: IOfferingProduct[];
+    details: IOfferDetail[];
 }
