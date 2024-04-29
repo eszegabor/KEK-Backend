@@ -1,7 +1,7 @@
 import { Schema } from "mongoose";
-export default interface IOfferingProduct {
+export default interface IOfferDetail {
+    _id?: Schema.Types.ObjectId;
     product_id?: Schema.Types.ObjectId;
-    unit?: string;
-    unit_price?: number;
     quantity?: number;
+    unit_price: number;
 }
