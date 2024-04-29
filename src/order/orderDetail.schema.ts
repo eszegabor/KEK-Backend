@@ -4,6 +4,7 @@ import IOrderDetail from "./orderDetail.interface";
 
 // LINK ./orderDetail.schema.yml
 const orderDetailSchema = new Schema<IOrderDetail>({
+    _id: Schema.Types.ObjectId,
     offer_id: {
         type: Schema.Types.ObjectId,
         ref: "Offer",

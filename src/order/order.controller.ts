@@ -7,7 +7,7 @@ import IdNotValidException from "../exceptions/IdNotValid.exception";
 import OrderNotFoundException from "../exceptions/OrderNotFound.exception";
 import IController from "../interfaces/controller.interface";
 import IRequestWithUser from "../interfaces/requestWithUser.interface";
-// import authMiddleware from "../middleware/auth.middleware";
+import authMiddleware from "../middleware/auth.middleware";
 import validationMiddleware from "../middleware/validation.middleware";
 import CreateOrderDto from "./order.dto";
 import IOrder from "./order.interface";
@@ -23,11 +23,11 @@ export default class OrderController implements IController {
     }
 
     private initializeRoutes() {
-        this.router.get(this.path, this.getAllOrders);
-        this.router.get(`${this.path}/:id`, this.getOrderById);
-        this.router.patch(`${this.path}/:id`, validationMiddleware(CreateOrderDto, true), this.modifyOrder);
-        this.router.post(this.path, validationMiddleware(CreateOrderDto), this.createOrder);
-        this.router.delete(`${this.path}/:id`, this.deleteOrder);
+        this.router.get(this.path, authMiddleware, this.getAllOrders);
+        this.router.get(`${this.path}/:id`, authMiddleware, this.getOrderById);
+        this.router.patch(`${this.path}/:id`, [authMiddleware, validationMiddleware(CreateOrderDto, true)], this.modifyOrder);
+        this.router.post(this.path, [authMiddleware, validationMiddleware(CreateOrderDto)], this.createOrder);
+        this.router.delete(`${this.path}/:id`, authMiddleware, this.deleteOrder);
     }
 
     // LINK ./order.controller.yml#getAllOrders
