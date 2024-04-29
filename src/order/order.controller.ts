@@ -95,8 +95,8 @@ export default class OrderController implements IController {
                 user_id: [uid],
             });
             const savedOrder = await createdOrder.save();
-            // const count = await this.order.countDocuments();
-            // res.append("x-total-count", `${count}`);
+            const count = await this.order.countDocuments();
+            res.append("x-total-count", `${count}`);
             res.send(savedOrder);
         } catch (error) {
             next(new HttpException(400, error.message));
