@@ -60,21 +60,21 @@
                         schema:
                             $ref: "#/components/schemas/Error"
 
-# LINK ./recipe.controller.ts#getRecipeById
-# ANCHOR[id=getRecipeById]
+# LINK ./order.controller.ts#getOrderById
+# ANCHOR[id=getOrderById]
 /orders/{id}:
     get:
         tags:
             - Orders
-        summary: Egy recept lekérdezése
-        description: Recept lekérdezése elsődleges-kulcs (id) alapján
+        summary: Egy rendelés lekérdezése
+        description: Rendelés lekérdezése elsődleges-kulcs (id) alapján
         parameters:
             - name: id
               in: path
-              description: A recept ObjectId azonosítója
+              description: A rendelés ObjectId azonosítója
               schema:
                   type: string
-                  example: "d12345678901234567890123"
+                  example: "eeee00000000000000000001"
               required: true
         responses:
             "200":
@@ -82,7 +82,7 @@
                 content:
                     application/json:
                         schema:
-                            $ref: "#/components/schemas/Recipe"
+                            $ref: "#/components/schemas/Order"
             "4XX":
                 description: Hiba
                 content:
@@ -90,37 +90,33 @@
                         schema:
                             $ref: "#/components/schemas/Error"
 
-    # LINK ./recipe.controller.ts#modifyRecipe
-    # ANCHOR[id=modifyRecipe]
+    # LINK ./order.controller.ts#modifyOrder
+    # ANCHOR[id=modifyOrder]
     patch:
         tags:
-            - Recipes
-        summary: Egy recept módosítása
-        description: Az elsődleges-kulccsal (id) kijelölt recept módosítása
+            - Orders
+        summary: Egy rendelés módosítása
+        description: Az elsődleges-kulccsal (id) kijelölt rendelés módosítása
         parameters:
             - name: id
               in: path
-              description: A recept ObjectId azonosítója
+              description: A rendelés ObjectId azonosítója
               schema:
                   type: string
-                  example: "d12345678901234567890123"
+                  example: "eeee00000000000000000002"
               required: true
         requestBody:
             content:
                 application/json:
                     schema:
-                        type: object
-                        properties:
-                            recipeName:
-                                type: string
-                                example: Ez lesz a recept VADI új címe
+                        $ref: "#/components/schemas/Order"
         responses:
             "200":
                 description: OK
                 content:
                     application/json:
                         schema:
-                            $ref: "#/components/schemas/Recipe"
+                            $ref: "#/components/schemas/Order"
             "4XX":
                 description: Hiba
                 content:
@@ -128,13 +124,13 @@
                         schema:
                             $ref: "#/components/schemas/Error"
 
-    # LINK ./recipe.controller.ts#deleteRecipe
-    # ANCHOR[id=deleteRecipe]
+    # LINK ./order.controller.ts#deleteOrder
+    # ANCHOR[id=deleteOrder]
     delete:
         tags:
-            - Recipes
-        summary: Egy recept törlése
-        description: Az elsődleges-kulccsal (id) kijelölt recept törlése.<br>
+            - Orders
+        summary: Egy rendelés törlése
+        description: Az elsődleges-kulccsal (id) kijelölt rendelés törlése.<br>
             A végpont törli a recept hivatkozását a users kollekcióból is.<br>
             Csak akkor megy végbe a törlés, ha sikeres a users kollekció módosítása is.<br>
             A művelet tranzakciókezelést használ.
