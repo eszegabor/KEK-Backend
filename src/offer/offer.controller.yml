@@ -1,26 +1,26 @@
-# LINK ./order.controller.ts#getAllOrders
-# ANCHOR[id=getAllOrder]
-/orders:
+# LINK ./offer.controller.ts#getAllOffer
+# ANCHOR[id=getAllOffer]
+/Offers:
     get:
         tags:
-            - Orders
-        summary: Az összes rendelés lekérdezése
-        description: A végpont a rendeléseket kérdezi lesz, a tábla összes adatával tér vissza
+            - Offers
+        summary: Az összes felajánlás lekérdezése
+        description: A végpont a felajánlásokat kérdezi le, a tábla összes adatával tér vissza
         responses:
-            "200":
+            "100":
                 description: OK.
                 content:
                     application/json:
                         schema:
                             type: array
                             items:
-                                $ref: "#/components/schemas/Order"
+                                $ref: "#/components/schemas/Offer"
                 headers:
                     x-total-count:
-                        description: A rendelések száma
+                        description: A felajánlások száma
                         schema:
                             type: integer
-                            example: 16334
+                            example: 2000
             "4XX":
                 description: Hiba
                 content:
@@ -28,31 +28,31 @@
                         schema:
                             $ref: "#/components/schemas/Error"
 
-    # LINK ./order.controller.ts#createOrder
-    # ANCHOR[id=createOrder]
+    # LINK ./offer.controller.ts#createOffer
+    # ANCHOR[id=createOffer]
     post:
         tags:
-            - Orders
-        summary: Új rendelés létrehozása
-        description: Új rendelés létrehozása a request body tartalma szerint
+            - Offers
+        summary: Új felajánlás létrehozása
+        description: Új felajánlás létrehozása.
         requestBody:
             content:
                 application/json:
                     schema:
-                        $ref: "#/components/schemas/Order"
+                        $ref: "#/components/schemas/Offer"
         responses:
             "200":
                 description: OK
                 content:
                     application/json:
                         schema:
-                            $ref: "#/components/schemas/Order"
+                            $ref: "#/components/schemas/Offer"
                 headers:
                     x-total-count:
-                        description: A rendelések száma
+                        description: A felajánlások száma
                         schema:
                             type: number
-                            example: 5126
+                            example: 2000
             "4XX":
                 description: Hiba
                 content:
@@ -60,18 +60,18 @@
                         schema:
                             $ref: "#/components/schemas/Error"
 
-# LINK ./order.controller.ts#getOrderById
-# ANCHOR[id=getOrderById]
-/orders/{id}:
+# LINK ./offer.controller.ts#getOfferById
+# ANCHOR[id=getOfferById]
+/offers/{id}:
     get:
         tags:
-            - Orders
-        summary: Egy rendelés lekérdezése
-        description: Rendelés lekérdezése elsődleges-kulcs (id) alapján
+            - Offers
+        summary: Egy felajánlás lekérdezése
+        description: Felajánlások lekérdezése elsődleges-kulcs (id) alapján
         parameters:
             - name: id
               in: path
-              description: A rendelés ObjectId azonosítója
+              description: A felajánlás ObjectId azonosítója
               schema:
                   type: string
                   example: "eeee00000000000000000001"
@@ -82,7 +82,7 @@
                 content:
                     application/json:
                         schema:
-                            $ref: "#/components/schemas/Order"
+                            $ref: "#/components/schemas/Offer"
             "4XX":
                 description: Hiba
                 content:
@@ -90,17 +90,17 @@
                         schema:
                             $ref: "#/components/schemas/Error"
 
-    # LINK ./order.controller.ts#modifyOrder
-    # ANCHOR[id=modifyOrder]
+    # LINK ./offer.controller.ts#modifyOffer
+    # ANCHOR[id=modifyOffer]
     patch:
         tags:
-            - Orders
-        summary: Egy rendelés módosítása
-        description: Az elsődleges-kulccsal (id) kijelölt rendelés módosítása
+            - Offers
+        summary: Egy felajánlás módosítása
+        description: Az elsődleges-kulccsal (id) kijelölt felajánlás módosítása
         parameters:
             - name: id
               in: path
-              description: A rendelés ObjectId azonosítója
+              description: A felajánlás ObjectId azonosítója
               schema:
                   type: string
                   example: "eeee00000000000000000002"
@@ -109,14 +109,14 @@
             content:
                 application/json:
                     schema:
-                        $ref: "#/components/schemas/Order"
+                        $ref: "#/components/schemas/Offer"
         responses:
             "200":
                 description: OK
                 content:
                     application/json:
                         schema:
-                            $ref: "#/components/schemas/Order"
+                            $ref: "#/components/schemas/Offer"
             "4XX":
                 description: Hiba
                 content:
@@ -124,20 +124,20 @@
                         schema:
                             $ref: "#/components/schemas/Error"
 
-    # LINK ./order.controller.ts#deleteOrder
-    # ANCHOR[id=deleteOrder]
+    # LINK ./offer.controller.ts#deleteOffer
+    # ANCHOR[id=deleteOffer]
     delete:
         tags:
-            - Orders
-        summary: Egy rendelés törlése
-        description: Az elsődleges-kulccsal (id) kijelölt rendelés törlése.<br>
-            A végpont törli a recept hivatkozását a users kollekcióból is.<br>
+            - Offer
+        summary: Egy felajánlás törlése
+        description: Az elsődleges-kulccsal (id) kijelölt felajánlás törlése.<br>
+            A végpont törli a offer hivatkozását a users kollekcióból is.<br>
             Csak akkor megy végbe a törlés, ha sikeres a users kollekció módosítása is.<br>
             A művelet tranzakciókezelést használ.
         parameters:
             - name: id
               in: path
-              description: A törlendő recept ObjectId azonosítója
+              description: A törlendő felajánlás ObjectId azonosítója
               schema:
                   type: string
                   example: "d12345678901234567890123"
@@ -147,14 +147,13 @@
                 description: OK
                 headers:
                     x-total-count:
-                        description: A receptek száma a törlés után
+                        description: A felajánlások száma a törlés után
                         schema:
                             type: number
-                            example: 343
+                            example: 200
             "4XX":
                 description: Hiba
                 content:
                     application/json:
                         schema:
                             $ref: "#/components/schemas/Error"
-
