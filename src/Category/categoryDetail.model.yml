@@ -1,0 +1,22 @@
+# LINK ./orderDetail.model.ts
+components:
+  schemas:
+    OrderDetail:
+      type: object
+      properties:
+        _id:
+          type: string
+          pattern: '^[0-9a-fA-F]{24}$'
+          description: "A megrendeléshez tartozó felajánlás ID - FK"
+          example: "bbbb00000000000000000001"
+        main_category:
+          type: string
+          pattern: '^[0-9a-fA-F]{24}$'
+          description: "A megrendeléshez tartozó termék ID - FK"
+          example: "dddd00000000000000000003"
+        category_name:
+          type: string
+          pattern: '^[0-9a-fA-F]{24}$'
+          description: "A megrendeléshez tartozó termék ID - FK"
+          example: "dddd00000000000000000003"
+       
