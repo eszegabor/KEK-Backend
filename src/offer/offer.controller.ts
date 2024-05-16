@@ -1,14 +1,16 @@
 import { NextFunction, Request, Response, Router } from "express";
-import ISession from "interfaces/session.interface";
 import { Schema, Types } from "mongoose";
 
 import HttpException from "../exceptions/Http.exception";
 import IdNotValidException from "../exceptions/IdNotValid.exception";
 import OfferNotFoundException from "../exceptions/OfferNotFount.exception";
+import ReferenceErrorException from "../exceptions/ReferenceError.exception";
 import IController from "../interfaces/controller.interface";
 import IRequestWithUser from "../interfaces/requestWithUser.interface";
+import ISession from "../interfaces/session.interface";
 import authMiddleware from "../middleware/auth.middleware";
 import validationMiddleware from "../middleware/validation.middleware";
+import orderModel from "../order/order.model";
 import CreateOfferDto from "./offering.dto";
 import IOffer from "./offering.interface";
 import offerModel from "./offering.model";
@@ -17,6 +19,7 @@ export default class OfferController implements IController {
     public path = "/offers";
     public router = Router();
     private offer = offerModel;
+    private order = orderModel;
 
     constructor() {
         this.initializeRoutes();
@@ -103,21 +106,27 @@ export default class OfferController implements IController {
         }
     };
 
-    // LINK ./Offer.controller.yml#deleteOrder
+    // LINK ./Offer.controller.yml#deleteOffer
     // ANCHOR[id=deleteOffer]
     private deleteOffer = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = req.params.id;
             if (Types.ObjectId.isValid(id)) {
-                const offer = await this.offer.findOne({ _id: id });
-                if (offer) {
-                    await this.offer.findByIdAndDelete(id);
-                    const count = await this.offer.countDocuments();
-                    res.append("x-total-count", `${count}`);
-                    res.sendStatus(200);
+                const isOfferHasReference = await this.order.findOne({ details: { $elemMatch: { offer_id: id } } });
+                if (isOfferHasReference) {
+                    next(new ReferenceErrorException("offering"));
                 } else {
-                    next(new OfferNotFoundException(id));
+                    const offer = await this.offer.findOne({ _id: id });
+                    if (offer) {
+                        await this.offer.findByIdAndDelete(id);
+                        const count = await this.offer.countDocuments();
+                        res.append("x-total-count", `${count}`);
+                        res.sendStatus(200);
+                    } else {
+                        next(new OfferNotFoundException(id));
+                    }
                 }
+            } else {
                 next(new IdNotValidException(id));
             }
         } catch (error) {
