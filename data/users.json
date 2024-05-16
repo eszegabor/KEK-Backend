@@ -14,7 +14,7 @@
     },
     {
         "_id": {
-            "$oid": "aaaa00000000000000000003"
+            "$oid": "aaaa00000000000000000002"
         },
         "email": "horvat.gabor@students.jedlik.eu",
         "email_verified": true,
@@ -27,7 +27,20 @@
     },
     {
         "_id": {
-            "$oid": "aaaa00000000000000000002"
+            "$oid": "aaaa00000000000000000003"
+        },
+        "email": "tompos.richard@students.jedlik.eu",
+        "email_verified": true,
+        "name": "Tompos Richárd",
+        "password": "$2b$10$JUygvHBmTHNiYpJ/AftHyuyZK7fGUGImghlD3DLOUcuQjelDl.4EK",
+        "roles": [
+            "user", "admin"
+        ],
+        "mobil_number": "+36201234567"
+    },
+    {
+        "_id": {
+            "$oid": "aaaa00000000000000000004"
         },
         "email": "nits.laszlo@jedlik.eu",
         "email_verified": true,
