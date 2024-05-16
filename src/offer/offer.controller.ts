@@ -4,6 +4,7 @@ import { Schema, Types } from "mongoose";
 import HttpException from "../exceptions/Http.exception";
 import IdNotValidException from "../exceptions/IdNotValid.exception";
 import OfferNotFoundException from "../exceptions/OfferNotFount.exception";
+import ReferenceErrorException from "../exceptions/ReferenceError.exception";
 import IController from "../interfaces/controller.interface";
 import IRequestWithUser from "../interfaces/requestWithUser.interface";
 import ISession from "../interfaces/session.interface";
@@ -112,18 +113,20 @@ export default class OfferController implements IController {
             const id = req.params.id;
             if (Types.ObjectId.isValid(id)) {
                 const isOfferHasReference = await this.order.findOne({ details: { $elemMatch: { offer_id: id } } });
-                if (isOfferHasReference){
-                    next(new Refe(""))
-                }
-                const offer = await this.offer.findOne({ _id: id });
-                if (offer) {
-                    await this.offer.findByIdAndDelete(id);
-                    const count = await this.offer.countDocuments();
-                    res.append("x-total-count", `${count}`);
-                    res.sendStatus(200);
+                if (isOfferHasReference) {
+                    next(new ReferenceErrorException("offering"));
                 } else {
-                    next(new OfferNotFoundException(id));
+                    const offer = await this.offer.findOne({ _id: id });
+                    if (offer) {
+                        await this.offer.findByIdAndDelete(id);
+                        const count = await this.offer.countDocuments();
+                        res.append("x-total-count", `${count}`);
+                        res.sendStatus(200);
+                    } else {
+                        next(new OfferNotFoundException(id));
+                    }
                 }
+            } else {
                 next(new IdNotValidException(id));
             }
         } catch (error) {
