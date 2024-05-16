@@ -1,4 +1,4 @@
-import { ArrayNotEmpty, IsArray, IsDate, IsMongoId, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { ArrayNotEmpty, IsArray, IsDateString, IsMongoId, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { Schema } from "mongoose";
 
 import IOrder from "./order.interface";
@@ -18,7 +18,9 @@ export default class CreateOrderDto implements IOrder {
     @IsNotEmpty()
     basket_id?: string;
 
-    @IsDate()
+    // @IsDate()
+    @IsDateString()
+    @IsOptional()
     order_date?: Date;
 
     @IsArray()

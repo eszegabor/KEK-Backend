@@ -4,11 +4,14 @@ import { Types } from "mongoose";
 // import authorModel from "../author/author.model";
 import HttpException from "../exceptions/Http.exception";
 import IdNotValidException from "../exceptions/IdNotValid.exception";
+import ReferenceErrorException from "../exceptions/ReferenceError.exception";
 import UserNotFoundException from "../exceptions/UserNotFound.exception";
 import IController from "../interfaces/controller.interface";
 import authMiddleware from "../middleware/auth.middleware";
 import validationMiddleware from "../middleware/validation.middleware";
-import postModel from "../post/post.model";
+import offeringModel from "../offer/offering.model";
+import orderModel from "../order/order.model";
+// import postModel from "../post/post.model";
 import CreateUserDto from "./user.dto";
 import IUser from "./user.interface";
 import userModel from "./user.model";
@@ -17,7 +20,9 @@ export default class UserController implements IController {
     public path = "/users";
     public router = Router();
     private user = userModel;
-    private post = postModel;
+    // private post = postModel;
+    private order = orderModel;
+    private offering = offeringModel;
     // private author = authorModel;
 
     constructor() {
@@ -100,11 +105,17 @@ export default class UserController implements IController {
         try {
             const id = req.params.id;
             if (Types.ObjectId.isValid(id)) {
-                const successResponse = await this.user.findByIdAndDelete(id);
-                if (successResponse) {
-                    res.sendStatus(200);
+                const isUserHasOrder = await this.order.findOne({ user_id: id });
+                const isUserHasOffering = await this.offering.findOne({ user_id: id });
+                if (isUserHasOrder || isUserHasOffering) {
+                    next(new ReferenceErrorException("users"));
                 } else {
-                    next(new UserNotFoundException(id));
+                    const successResponse = await this.user.findByIdAndDelete(id);
+                    if (successResponse) {
+                        res.sendStatus(200);
+                    } else {
+                        next(new UserNotFoundException(id));
+                    }
                 }
             } else {
                 next(new IdNotValidException(id));

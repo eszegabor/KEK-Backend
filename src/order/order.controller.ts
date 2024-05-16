@@ -13,7 +13,7 @@ import CreateOrderDto from "./order.dto";
 import IOrder from "./order.interface";
 import orderModel from "./order.model";
 
-export default class RecipeController implements IController {
+export default class OrderController implements IController {
     public path = "/orders";
     public router = Router();
     private order = orderModel;

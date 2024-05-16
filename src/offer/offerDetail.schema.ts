@@ -1,15 +1,10 @@
 import { Schema } from "mongoose";
 
-import IOrderDetail from "./orderDetail.interface";
+import IOfferDetail from "./offerDetail.interface";
 
-// LINK ./orderDetail.schema.yml
-const orderDetailSchema = new Schema<IOrderDetail>({
+// LINK ./offerDetail.schema.yml
+const offerDetailSchema = new Schema<IOfferDetail>({
     _id: Schema.Types.ObjectId,
-    offer_id: {
-        type: Schema.Types.ObjectId,
-        ref: "Offer",
-        required: true,
-    },
     product_id: {
         type: Schema.Types.ObjectId,
         ref: "Product",
@@ -20,12 +15,11 @@ const orderDetailSchema = new Schema<IOrderDetail>({
         min: 0,
         required: true,
     },
-    stars: {
+    unit_price: {
         type: Number,
         min: 0,
-        max: 5,
         default: 0,
     },
 });
 
-export default orderDetailSchema;
+export default offerDetailSchema;
