@@ -1,11 +1,11 @@
 import { model, Schema } from "mongoose";
 
+import IOffer from "./offer.interface";
 import offerDetailSchema from "./offerDetail.schema";
-import IOffering from "./offering.interface";
 
-// LINK ./offering.model.yml
+// LINK ./offer.model.yml
 
-const offeringSchema = new Schema<IOffering>(
+const offerSchema = new Schema<IOffer>(
     {
         _id: Schema.Types.ObjectId,
         user_id: {
@@ -24,6 +24,6 @@ const offeringSchema = new Schema<IOffering>(
     { versionKey: false, id: false, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );
 
-const offeringModel = model<IOffering>("Offering", offeringSchema, "offering");
+const offerModel = model<IOffer>("Offer", offerSchema, "offers");
 
-export default offeringModel;
+export default offerModel;

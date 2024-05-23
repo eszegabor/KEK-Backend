@@ -9,7 +9,7 @@ import UserNotFoundException from "../exceptions/UserNotFound.exception";
 import IController from "../interfaces/controller.interface";
 import authMiddleware from "../middleware/auth.middleware";
 import validationMiddleware from "../middleware/validation.middleware";
-import offeringModel from "../offer/offering.model";
+import offerModel from "../offer/offer.model";
 import orderModel from "../order/order.model";
 // import postModel from "../post/post.model";
 import CreateUserDto from "./user.dto";
@@ -22,7 +22,7 @@ export default class UserController implements IController {
     private user = userModel;
     // private post = postModel;
     private order = orderModel;
-    private offering = offeringModel;
+    private offer = offerModel;
     // private author = authorModel;
 
     constructor() {
@@ -106,8 +106,8 @@ export default class UserController implements IController {
             const id = req.params.id;
             if (Types.ObjectId.isValid(id)) {
                 const isUserHasOrder = await this.order.findOne({ user_id: id });
-                const isUserHasOffering = await this.offering.findOne({ user_id: id });
-                if (isUserHasOrder || isUserHasOffering) {
+                const isUserHasOffer = await this.offer.findOne({ user_id: id });
+                if (isUserHasOrder || isUserHasOffer) {
                     next(new ReferenceErrorException("users"));
                 } else {
                     const successResponse = await this.user.findByIdAndDelete(id);
