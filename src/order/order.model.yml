@@ -28,5 +28,6 @@ components:
                 basket_id:
                     type: string
                     description: "Kosár azonosítója, ahová a rendelés kerül"
+                    example: "24"
 
                 
