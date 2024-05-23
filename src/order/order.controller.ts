@@ -4,11 +4,13 @@ import { Schema, Types } from "mongoose";
 
 import HttpException from "../exceptions/Http.exception";
 import IdNotValidException from "../exceptions/IdNotValid.exception";
+import OfferNotFoundException from "../exceptions/OfferNotFount.exception";
 import OrderNotFoundException from "../exceptions/OrderNotFound.exception";
 import IController from "../interfaces/controller.interface";
 import IRequestWithUser from "../interfaces/requestWithUser.interface";
 import authMiddleware from "../middleware/auth.middleware";
 import validationMiddleware from "../middleware/validation.middleware";
+import offerModel from "../offer/offer.model";
 import CreateOrderDto from "./order.dto";
 import IOrder from "./order.interface";
 import orderModel from "./order.model";
@@ -17,6 +19,8 @@ export default class OrderController implements IController {
     public path = "/orders";
     public router = Router();
     private order = orderModel;
+    private offer = offerModel;
+    // private product = productModel; // Ha Horváth Gabi elkészül vele!
 
     constructor() {
         this.initializeRoutes();
@@ -94,10 +98,24 @@ export default class OrderController implements IController {
                 ...orderData,
                 user_id: [uid],
             });
-            const savedOrder = await createdOrder.save();
-            const count = await this.order.countDocuments();
-            res.append("x-total-count", `${count}`);
-            res.send(savedOrder);
+
+            let firstBadOfferId: string = "";
+            for (const e of createdOrder.details) {
+                const offer = await this.offer.findOne({ _id: e.offer_id });
+                if (!offer) {
+                    firstBadOfferId = e.offer_id.toString();
+                    break;
+                }
+            }
+
+            if (firstBadOfferId == "") {
+                const savedOrder = await createdOrder.save();
+                const count = await this.order.countDocuments();
+                res.append("x-total-count", `${count}`);
+                res.send(savedOrder);
+            } else {
+                next(new OfferNotFoundException(firstBadOfferId));
+            }
         } catch (error) {
             next(new HttpException(400, error.message));
         }
@@ -118,8 +136,7 @@ export default class OrderController implements IController {
                 } else {
                     next(new OrderNotFoundException(id));
                 }
-                next(new IdNotValidException(id));
-            }
+            } else next(new IdNotValidException(id));
         } catch (error) {
             next(new HttpException(400, error.message));
         }
