@@ -11,9 +11,9 @@ import ISession from "../interfaces/session.interface";
 import authMiddleware from "../middleware/auth.middleware";
 import validationMiddleware from "../middleware/validation.middleware";
 import orderModel from "../order/order.model";
-import CreateOfferDto from "./offering.dto";
-import IOffer from "./offering.interface";
-import offerModel from "./offering.model";
+import CreateOfferDto from "./offer.dto";
+import IOffer from "./offer.interface";
+import offerModel from "./offer.model";
 
 export default class OfferController implements IController {
     public path = "/offers";
@@ -114,7 +114,7 @@ export default class OfferController implements IController {
             if (Types.ObjectId.isValid(id)) {
                 const isOfferHasReference = await this.order.findOne({ details: { $elemMatch: { offer_id: id } } });
                 if (isOfferHasReference) {
-                    next(new ReferenceErrorException("offering"));
+                    next(new ReferenceErrorException("offer"));
                 } else {
                     const offer = await this.offer.findOne({ _id: id });
                     if (offer) {

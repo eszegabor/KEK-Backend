@@ -1,7 +1,7 @@
-# LINK ./offering.model.ts
+# LINK ./offer.model.ts
 components:
     schemas:
-        Offering:
+        Offer:
             type: object
             properties:
                 _id:
