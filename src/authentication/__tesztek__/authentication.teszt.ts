@@ -3,7 +3,7 @@ import "dotenv/config";
 import request from "supertest";
 
 import App from "../../app";
-import AuthenticationController from "../../authentication/authentication.controller";
+import AuthenticationController from "../authentication.controller";
 
 let server: App;
 
