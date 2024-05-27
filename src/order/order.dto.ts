@@ -26,6 +26,7 @@ export class OrderDetails implements IOrderDetail {
     @IsInt()
     @Min(0)
     @Max(5)
+    @IsOptional()
     stars?: number;
 }
 
