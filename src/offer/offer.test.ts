@@ -2,7 +2,7 @@ import request from "supertest";
 
 import App from "../../src/app";
 import AuthenticationController from "../authentication/authentication.controller";
-import RecipeController from "../offer/offer.controller";
+import OfferController from "../offer/offer.controller";
 
 // let server: Express.Application;
 let cookie: string | any;
@@ -10,7 +10,7 @@ let server: App;
 
 beforeAll(async () => {
     // create server for test:
-    server = new App([new AuthenticationController(), new RecipeController()]);
+    server = new App([new AuthenticationController(), new OfferController()]);
     // connect and get cookie for authentication
     await server
         .connectToTheDatabase("5002")
@@ -29,25 +29,25 @@ beforeAll(async () => {
     cookie = res.headers["set-cookie"][0];
 });
 
-describe("test recipes endpoints", () => {
+describe("test offers endpoints", () => {
     let id: string;
 
-    it("GET /recipes", async () => {
+    it("GET /offers", async () => {
         // get response with supertest-response:
-        const response = await request(server.getServer()).get("/recipes").set("Cookie", cookie);
+        const response = await request(server.getServer()).get("/offers").set("Cookie", cookie);
         // check response with jest:
         expect(response.statusCode).toEqual(200);
         expect(response.header["x-total-count"]).toEqual("10"); // basically 10
     });
 
-    it("GET /recipes (missing cookie)", async () => {
-        const response = await request(server.getServer()).get("/recipes");
+    it("GET /offers (missing cookie)", async () => {
+        const response = await request(server.getServer()).get("/offers");
         expect(response.statusCode).toEqual(401);
         expect(response.body.message).toEqual("Session id missing or session has expired, please log in!");
     });
 
     it("GET /:offset/:limit/:sortField/:filter? (search for 'filter')", async () => {
-        const response = await request(server.getServer()).get("/recipes/0/5/description/paradicsom").set("Cookie", cookie);
+        const response = await request(server.getServer()).get("/offers/0/5/description/paradicsom").set("Cookie", cookie);
         expect(response.statusCode).toEqual(200);
         // expect(response.body.count).toEqual(2);
         expect(response.headers["x-total-count"]).toEqual("2");
@@ -58,20 +58,20 @@ describe("test recipes endpoints", () => {
     });
 
     it("GET /:offset/:limit/:sortField/:filter? (search for missing 'keyword')", async () => {
-        const response = await request(server.getServer()).get("/recipes/0/5/description/goesiéhgesouihg").set("Cookie", cookie);
+        const response = await request(server.getServer()).get("/offers/0/5/description/goesiéhgesouihg").set("Cookie", cookie);
         expect(response.statusCode).toEqual(200);
         expect(response.headers["x-total-count"]).toEqual("0");
     });
 
     it("GET /:offset/:limit/:sortField/:filter? (no last parameter 'filter')", async () => {
-        const response = await request(server.getServer()).get("/recipes/0/5/description").set("Cookie", cookie);
+        const response = await request(server.getServer()).get("/offers/0/5/description").set("Cookie", cookie);
         expect(response.statusCode).toEqual(200);
         expect(response.headers["x-total-count"]).toEqual("10");
     });
 
-    it("GET /recipes/:id  (correct id)", async () => {
+    it("GET /offers/:id  (correct id)", async () => {
         id = "daaaaaaaaaaaaaaaaaaaaaaa";
-        const response = await request(server.getServer()).get(`/recipes/${id}`).set("Cookie", cookie);
+        const response = await request(server.getServer()).get(`/offers/${id}`).set("Cookie", cookie);
         expect(response.statusCode).toEqual(200);
         expect(response.body.recipeName).toEqual("KELKÁPOSZTA FŐZELÉK");
     });
