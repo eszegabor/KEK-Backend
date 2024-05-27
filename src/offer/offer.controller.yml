@@ -1,9 +1,9 @@
 # LINK ./offer.controller.ts#getAllOffer
 # ANCHOR[id=getAllOffer]
-/Offers:
+/Offer:
     get:
         tags:
-            - Offers
+            - Offer
         summary: Az összes felajánlás lekérdezése
         description: A végpont a felajánlásokat kérdezi le, a tábla összes adatával tér vissza
         responses:
@@ -32,7 +32,7 @@
     # ANCHOR[id=createOffer]
     post:
         tags:
-            - Offers
+            - Offer
         summary: Új felajánlás létrehozása
         description: Új felajánlás létrehozása.
         requestBody:
@@ -62,10 +62,10 @@
 
 # LINK ./offer.controller.ts#getOfferById
 # ANCHOR[id=getOfferById]
-/offers/{id}:
+/offer/{id}:
     get:
         tags:
-            - Offers
+            - Offer
         summary: Egy felajánlás lekérdezése
         description: Felajánlások lekérdezése elsődleges-kulcs (id) alapján
         parameters:
@@ -94,7 +94,7 @@
     # ANCHOR[id=modifyOffer]
     patch:
         tags:
-            - Offers
+            - Offer
         summary: Egy felajánlás módosítása
         description: Az elsődleges-kulccsal (id) kijelölt felajánlás módosítása
         parameters:
