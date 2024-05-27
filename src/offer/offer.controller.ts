@@ -16,7 +16,7 @@ import IOffer from "./offer.interface";
 import offerModel from "./offer.model";
 
 export default class OfferController implements IController {
-    public path = "/offers";
+    public path = "/offer";
     public router = Router();
     private offer = offerModel;
     private order = orderModel;
@@ -26,21 +26,21 @@ export default class OfferController implements IController {
     }
 
     private initializeRoutes() {
-        this.router.get(this.path, authMiddleware, this.getAllOffers);
+        this.router.get(this.path, authMiddleware, this.getAllOffer);
         this.router.get(`${this.path}/:id`, authMiddleware, this.getOrderById);
         this.router.patch(`${this.path}/:id`, [authMiddleware, validationMiddleware(CreateOfferDto, true)], this.modifyOffer);
         this.router.post(this.path, [authMiddleware, validationMiddleware(CreateOfferDto)], this.createOffer);
         this.router.delete(`${this.path}/:id`, authMiddleware, this.deleteOffer);
     }
 
-    // LINK ./offer.controller.yml#getAllOffers
-    // ANCHOR[id=getAllOffers]
-    private getAllOffers = async (req: Request, res: Response, next: NextFunction) => {
+    // LINK ./offer.controller.yml#getAllOffer
+    // ANCHOR[id=getAllOffer]
+    private getAllOffer = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const count = await this.offer.countDocuments();
-            const offers = await this.offer.find().sort({ _id: 1 });
+            const offer = await this.offer.find().sort({ _id: 1 });
             res.append("x-total-count", `${count}`);
-            res.send(offers);
+            res.send(offer);
         } catch (error) {
             next(new HttpException(400, error.message));
         }
