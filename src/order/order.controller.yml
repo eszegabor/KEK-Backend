@@ -131,26 +131,23 @@
             - Orders
         summary: Egy rendelés törlése
         description: Az elsődleges-kulccsal (id) kijelölt rendelés törlése.<br>
-            A végpont törli a recept hivatkozását a users kollekcióból is.<br>
-            Csak akkor megy végbe a törlés, ha sikeres a users kollekció módosítása is.<br>
-            A művelet tranzakciókezelést használ.
         parameters:
             - name: id
               in: path
-              description: A törlendő recept ObjectId azonosítója
+              description: A törlendő rendelés ObjectId azonosítója
               schema:
                   type: string
-                  example: "d12345678901234567890123"
+                  example: "eeee00000000000000000001"
               required: true
         responses:
             "200":
                 description: OK
                 headers:
                     x-total-count:
-                        description: A receptek száma a törlés után
+                        description: A rendelések száma a törlés után
                         schema:
                             type: number
-                            example: 343
+                            example: 231
             "4XX":
                 description: Hiba
                 content:

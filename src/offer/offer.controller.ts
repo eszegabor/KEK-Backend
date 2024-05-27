@@ -16,7 +16,7 @@ import IOffer from "./offer.interface";
 import offerModel from "./offer.model";
 
 export default class OfferController implements IController {
-    public path = "/offer";
+    public path = "/offers";
     public router = Router();
     private offer = offerModel;
     private order = orderModel;
@@ -27,7 +27,7 @@ export default class OfferController implements IController {
 
     private initializeRoutes() {
         this.router.get(this.path, authMiddleware, this.getAllOffer);
-        this.router.get(`${this.path}/:id`, authMiddleware, this.getOrderById);
+        this.router.get(`${this.path}/:id`, authMiddleware, this.getOfferById);
         this.router.patch(`${this.path}/:id`, [authMiddleware, validationMiddleware(CreateOfferDto, true)], this.modifyOffer);
         this.router.post(this.path, [authMiddleware, validationMiddleware(CreateOfferDto)], this.createOffer);
         this.router.delete(`${this.path}/:id`, authMiddleware, this.deleteOffer);
@@ -48,13 +48,13 @@ export default class OfferController implements IController {
 
     //LINK ./Offer.controller.yml#getOrderById
     //ANCHOR[id=getOfferById]
-    private getOrderById = async (req: Request, res: Response, next: NextFunction) => {
+    private getOfferById = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = req.params.id;
             if (Types.ObjectId.isValid(id)) {
-                const order = await this.offer.findById(id);
-                if (order) {
-                    res.send(order);
+                const offer = await this.offer.findById(id);
+                if (offer) {
+                    res.send(offer);
                 } else {
                     next(new OfferNotFoundException(id));
                 }
