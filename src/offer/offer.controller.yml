@@ -7,7 +7,7 @@
         summary: Az összes felajánlás lekérdezése
         description: A végpont a felajánlásokat kérdezi le, a tábla összes adatával tér vissza
         responses:
-            "100":
+            "200":
                 description: OK.
                 content:
                     application/json:
