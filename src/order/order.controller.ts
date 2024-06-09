@@ -6,11 +6,14 @@ import HttpException from "../exceptions/Http.exception";
 import IdNotValidException from "../exceptions/IdNotValid.exception";
 import OfferNotFoundException from "../exceptions/OfferNotFount.exception";
 import OrderNotFoundException from "../exceptions/OrderNotFound.exception";
+import ProductNotFoundException from "../exceptions/ProductNotFound.exception";
+import UserIdCannotChangeException from "../exceptions/UserIdCannotChangeException";
 import IController from "../interfaces/controller.interface";
 import IRequestWithUser from "../interfaces/requestWithUser.interface";
 import authMiddleware from "../middleware/auth.middleware";
 import validationMiddleware from "../middleware/validation.middleware";
 import offerModel from "../offer/offer.model";
+import productModel from "../product/product.model";
 import CreateOrderDto from "./order.dto";
 import IOrder from "./order.interface";
 import orderModel from "./order.model";
@@ -20,7 +23,7 @@ export default class OrderController implements IController {
     public router = Router();
     private order = orderModel;
     private offer = offerModel;
-    // private product = productModel; // Ha Horváth Gabi elkészül vele!
+    private product = productModel;
 
     constructor() {
         this.initializeRoutes();
@@ -74,6 +77,31 @@ export default class OrderController implements IController {
             const id = req.params.id;
             if (Types.ObjectId.isValid(id)) {
                 const orderData: IOrder = req.body;
+
+                if (orderData.user_id) {
+                    next(new UserIdCannotChangeException());
+                    return;
+                }
+
+                if (orderData.details) {
+                    // check offer(s)
+                    for (const e of orderData.details) {
+                        const offer = await this.offer.findOne({ _id: e.offer_id });
+                        if (!offer) {
+                            next(new OfferNotFoundException(e.offer_id.toString()));
+                            return;
+                        }
+                    }
+
+                    // check product(s)
+                    for (const e of orderData.details) {
+                        const product = await this.product.findOne({ _id: e.product_id });
+                        if (!product) {
+                            next(new ProductNotFoundException(e.product_id.toString()));
+                            return;
+                        }
+                    }
+                }
                 const order = await this.order.findByIdAndUpdate(id, orderData, { new: true });
                 if (order) {
                     res.send(order);
@@ -99,23 +127,27 @@ export default class OrderController implements IController {
                 user_id: [uid],
             });
 
-            let firstBadOfferId: string = "";
+            // check offer(s)
             for (const e of createdOrder.details) {
                 const offer = await this.offer.findOne({ _id: e.offer_id });
                 if (!offer) {
-                    firstBadOfferId = e.offer_id.toString();
-                    break;
+                    next(new OfferNotFoundException(e.offer_id.toString()));
+                    return;
                 }
             }
 
-            if (firstBadOfferId == "") {
-                const savedOrder = await createdOrder.save();
-                const count = await this.order.countDocuments();
-                res.append("x-total-count", `${count}`);
-                res.send(savedOrder);
-            } else {
-                next(new OfferNotFoundException(firstBadOfferId));
+            // check product(s)
+            for (const e of createdOrder.details) {
+                const product = await this.product.findOne({ _id: e.product_id });
+                if (!product) {
+                    next(new ProductNotFoundException(e.product_id.toString()));
+                    return;
+                }
             }
+            const savedOrder = await createdOrder.save();
+            const count = await this.order.countDocuments();
+            res.append("x-total-count", `${count}`);
+            res.send(savedOrder);
         } catch (error) {
             next(new HttpException(400, error.message));
         }
