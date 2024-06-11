@@ -1,0 +1,1 @@
+{"version":3,"file":"UserIdCannotChangeException.js","sourceRoot":"","sources":["../../src/exceptions/UserIdCannotChangeException.ts"],"names":[],"mappings":";;;AAAA,8EAA6C;AAE7C,MAAqB,2BAA4B,SAAQ,wBAAa;IAClE;QACI,KAAK,CAAC,GAAG,EAAE,4BAA4B,CAAC,CAAC;IAC7C,CAAC;CACJ;AAJD,8CAIC"}
