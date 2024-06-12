@@ -11,7 +11,6 @@ import authMiddleware from "../middleware/auth.middleware";
 import validationMiddleware from "../middleware/validation.middleware";
 import offerModel from "../offer/offer.model";
 import orderModel from "../order/order.model";
-// import postModel from "../post/post.model";
 import CreateUserDto from "./user.dto";
 import IUser from "./user.interface";
 import userModel from "./user.model";
@@ -20,17 +19,14 @@ export default class UserController implements IController {
     public path = "/users";
     public router = Router();
     private user = userModel;
-    // private post = postModel;
     private order = orderModel;
     private offer = offerModel;
-    // private author = authorModel;
 
     constructor() {
         this.initializeRoutes();
     }
 
     private initializeRoutes() {
-        // this.router.get(`${this.path}/posts/:id`, authMiddleware, this.getAllPostsOfUserByID);
         this.router.get(`${this.path}/:id`, authMiddleware, this.getUserById);
         this.router.get(this.path, authMiddleware, this.getAllUsers);
         this.router.patch(`${this.path}/:id`, [authMiddleware, validationMiddleware(CreateUserDto, true)], this.modifyUser);
@@ -44,7 +40,6 @@ export default class UserController implements IController {
             const count = await this.user.countDocuments();
             this.user
                 .find()
-                // .populate("recipes")
                 .sort({ _id: 1 })
                 .then(users => {
                     res.append("x-total-count", `${count}`);
@@ -61,11 +56,6 @@ export default class UserController implements IController {
         try {
             const id = req.params.id;
             if (Types.ObjectId.isValid(id)) {
-                // const userQuery = this.user.findById(id);
-                // if (request.query.withPosts === "true") {
-                //     userQuery.populate("posts").exec();
-                // }
-
                 // Multiple populates:
                 // const user = await this.user.findById(id).populate("recipes").populate("recipes");
                 const user = await this.user.findById(id);

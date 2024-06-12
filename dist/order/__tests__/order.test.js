@@ -27,7 +27,7 @@ beforeAll(async () => {
     // set cookie
     cookie = res.headers["set-cookie"][0];
 });
-describe("test recipes endpoints", () => {
+describe("test orders endpoints", () => {
     let id = "";
     it("GET /orders", async () => {
         // get response with supertest-response:

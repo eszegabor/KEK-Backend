@@ -29,11 +29,6 @@ class App {
         }
         this.controllers = controllers;
     }
-    // public listen(port: string): void {
-    //     this.app.listen(port, () => {
-    //         console.log(`App listening on the port ${port}`);
-    //     });
-    // }
     // only use in tests
     getServer() {
         return this.app;
@@ -104,7 +99,6 @@ class App {
             this.app.use("/", controller.router);
         });
     }
-    // const connectToTheDatabase(controllers: IController[]): Promise<string> = new Promise((resolve, reject) =>{});
     async connectToTheDatabase(port) {
         return new Promise((resolve, reject) => {
             // execute some code here
