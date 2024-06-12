@@ -7,7 +7,7 @@
     },
     "servers": [
         {
-            "url": "https://jedliksession.onrender.app"
+            "url": "https://jedliksession.onrender.com"
         },
         {
             "url": "http://localhost:5000"
