@@ -5,6 +5,7 @@ import { Schema, Types } from "mongoose";
 import HttpException from "../exceptions/Http.exception";
 import IdNotValidException from "../exceptions/IdNotValid.exception";
 import OfferNotFoundException from "../exceptions/OfferNotFount.exception";
+import OrderDetailNotFoundException from "../exceptions/OrderDetailNotFound.exception";
 import OrderNotFoundException from "../exceptions/OrderNotFound.exception";
 import ProductNotFoundException from "../exceptions/ProductNotFound.exception";
 import UserIdCannotChangeException from "../exceptions/UserIdCannotChangeException";
@@ -35,6 +36,7 @@ export default class OrderController implements IController {
         this.router.patch(`${this.path}/:id`, [authMiddleware, validationMiddleware(CreateOrderDto, true)], this.modifyOrder);
         this.router.post(this.path, [authMiddleware, validationMiddleware(CreateOrderDto)], this.createOrder);
         this.router.delete(`${this.path}/:id`, authMiddleware, this.deleteOrder);
+        this.router.delete(`${this.path}/:id/:detail_id`, authMiddleware, this.deleteFromDetails);
     }
 
     // LINK ./order.controller.yml#getAllOrders
@@ -165,6 +167,31 @@ export default class OrderController implements IController {
                     const count = await this.order.countDocuments();
                     res.append("x-total-count", `${count}`);
                     res.sendStatus(200);
+                } else {
+                    next(new OrderNotFoundException(id));
+                }
+            } else next(new IdNotValidException(id));
+        } catch (error) {
+            next(new HttpException(400, error.message));
+        }
+    };
+
+    // LINK ./order.controller.yml#deleteFromDetails
+    // ANCHOR[id=deleteFromDetails]
+    private deleteFromDetails = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const id = req.params.id;
+            const detail_id = req.params.detail_id;
+            if (Types.ObjectId.isValid(id)) {
+                const order = await this.order.findOne({ _id: id });
+                if (order) {
+                    const orderDetails = await this.order.findOne({ $and: [{ _id: id }, { details: { $elemMatch: { _id: detail_id } } }] });
+                    if (orderDetails) {
+                        await this.order.findOneAndUpdate({ _id: id }, { $pull: { details: { _id: detail_id } } });
+                        res.sendStatus(200);
+                    } else {
+                        next(new OrderDetailNotFoundException(detail_id));
+                    }
                 } else {
                     next(new OrderNotFoundException(id));
                 }

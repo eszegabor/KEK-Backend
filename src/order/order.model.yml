@@ -19,7 +19,7 @@ components:
                     type: array
                     description: "A rendelés részletei"
                     items:
-                        $ref: '#/components/schemas/OrderDetail'
+                        $ref: 'orderDetail.schema.yml#/components/schemas/OrderDetail'
                 order_date:
                     type: string
                     format: date-time
