@@ -6,7 +6,7 @@ info:
         <img alt='DB_diagram' height='700px'
         src='https://nitslaszlo.github.io/static/session/db_diagram_new.jpg' />
 servers:
-    - url: https://jedliksession.onrender.app
+    - url: https://jedliksession.onrender.com
     - url: http://localhost:5000
 paths:
     /auth/login:

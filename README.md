@@ -4,4 +4,4 @@ Base repo:
 https://github.com/nitslaszlo/jedlik-express-mongoose-ts-backend-template-session
 
 Backend deployment
-https://kek-backend.onrender.app
+https://kek-backend.onrender.com

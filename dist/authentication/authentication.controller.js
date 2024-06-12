@@ -25,7 +25,7 @@ class AuthenticationController {
     initializeRoutes() {
         this.router.get("/", (req, res) => {
             if (process.env.NODE_ENV == "deployment") {
-                res.send("kek-backend API - Swagger: <a href='https://kek-backend.onrender.app/docs'>https://kek-backend.onrender.app/docs</a>");
+                res.send("kek-backend API - Swagger: <a href='https://kek-backend.onrender.com/docs'>https://kek-backend.onrender.com/docs</a>");
             }
             else {
                 res.send("kek-backend API - Swagger: <a href='http://localhost:5000/docs'>http://localhost:5000/docs</a>");
