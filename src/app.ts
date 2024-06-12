@@ -32,12 +32,6 @@ export default class App {
         this.controllers = controllers;
     }
 
-    // public listen(port: string): void {
-    //     this.app.listen(port, () => {
-    //         console.log(`App listening on the port ${port}`);
-    //     });
-    // }
-
     // only use in tests
     public getServer(): express.Application {
         return this.app;
@@ -117,8 +111,6 @@ export default class App {
             this.app.use("/", controller.router);
         });
     }
-
-    // const connectToTheDatabase(controllers: IController[]): Promise<string> = new Promise((resolve, reject) =>{});
 
     public async connectToTheDatabase(port?: string): Promise<string> {
         return new Promise((resolve, reject) => {

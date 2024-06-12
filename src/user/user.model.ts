@@ -36,13 +36,6 @@ const userSchema = new Schema<IUser>(
     { versionKey: false, id: false, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );
 
-// userSchema.virtual("recipes", {
-//     ref: "Recipe",
-//     localField: "recipe_id",
-//     foreignField: "_id",
-//     justOne: false,
-// });
-
 const userModel = model<IUser>("User", userSchema, "users");
 
 export default userModel;

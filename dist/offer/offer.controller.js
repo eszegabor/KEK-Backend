@@ -13,7 +13,7 @@ const order_model_1 = tslib_1.__importDefault(require("../order/order.model"));
 const offer_dto_1 = tslib_1.__importDefault(require("./offer.dto"));
 const offer_model_1 = tslib_1.__importDefault(require("./offer.model"));
 class OfferController {
-    path = "/offer";
+    path = "/offers";
     router = (0, express_1.Router)();
     offer = offer_model_1.default;
     order = order_model_1.default;
@@ -22,7 +22,7 @@ class OfferController {
     }
     initializeRoutes() {
         this.router.get(this.path, auth_middleware_1.default, this.getAllOffer);
-        this.router.get(`${this.path}/:id`, auth_middleware_1.default, this.getOrderById);
+        this.router.get(`${this.path}/:id`, auth_middleware_1.default, this.getOfferById);
         this.router.patch(`${this.path}/:id`, [auth_middleware_1.default, (0, validation_middleware_1.default)(offer_dto_1.default, true)], this.modifyOffer);
         this.router.post(this.path, [auth_middleware_1.default, (0, validation_middleware_1.default)(offer_dto_1.default)], this.createOffer);
         this.router.delete(`${this.path}/:id`, auth_middleware_1.default, this.deleteOffer);
@@ -42,13 +42,13 @@ class OfferController {
     };
     //LINK ./Offer.controller.yml#getOrderById
     //ANCHOR[id=getOfferById]
-    getOrderById = async (req, res, next) => {
+    getOfferById = async (req, res, next) => {
         try {
             const id = req.params.id;
             if (mongoose_1.Types.ObjectId.isValid(id)) {
-                const order = await this.offer.findById(id);
-                if (order) {
-                    res.send(order);
+                const offer = await this.offer.findById(id);
+                if (offer) {
+                    res.send(offer);
                 }
                 else {
                     next(new OfferNotFount_exception_1.default(id));

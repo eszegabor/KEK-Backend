@@ -29,12 +29,6 @@ const userSchema = new mongoose_1.Schema({
         required: true,
     },
 }, { versionKey: false, id: false, toJSON: { virtuals: true }, toObject: { virtuals: true } });
-// userSchema.virtual("recipes", {
-//     ref: "Recipe",
-//     localField: "recipe_id",
-//     foreignField: "_id",
-//     justOne: false,
-// });
 const userModel = (0, mongoose_1.model)("User", userSchema, "users");
 exports.default = userModel;
 //# sourceMappingURL=user.model.js.map
