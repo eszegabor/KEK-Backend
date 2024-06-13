@@ -1,4 +1,3 @@
-import ProductNotFoundException from "exceptions/ProductNotFound.exception";
 import { NextFunction, Request, Response, Router } from "express";
 import { Schema, Types } from "mongoose";
 
@@ -6,6 +5,7 @@ import HttpException from "../exceptions/Http.exception";
 import IdNotValidException from "../exceptions/IdNotValid.exception";
 import OfferNotFoundException from "../exceptions/OfferNotFount.exception";
 import OfferDetailNotFoundException from "../exceptions/OrderDetailNotFound.exception";
+import ProductNotFoundException from "../exceptions/ProductNotFound.exception";
 import ReferenceErrorException from "../exceptions/ReferenceError.exception";
 import IController from "../interfaces/controller.interface";
 import IRequestWithUser from "../interfaces/requestWithUser.interface";
@@ -100,7 +100,7 @@ export default class OfferController implements IController {
             const uid: Schema.Types.ObjectId = (req.session as ISession).user_id;
             const createdOffer = new this.offer({
                 ...offerData,
-                user_id: [uid],
+                user_id: uid,
             });
 
             // check product(s)

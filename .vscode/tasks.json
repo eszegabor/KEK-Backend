@@ -17,7 +17,10 @@
             "group": {
                 "kind": "test",
                 "isDefault": true
-            }
+            },
+            "problemMatcher": [],
+            "label": "npm: test",
+            "detail": "jest || ECHO."
         }
     ]
 }
