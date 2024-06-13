@@ -157,3 +157,36 @@
                     application/json:
                         schema:
                             $ref: "#/components/schemas/Error"
+
+    # LINK ./offer.controller.ts#deleteFromDetails
+    # ANCHOR[id=deleteFromDetails]
+    /offer/{id}/{detail_id}:
+        delete:
+            tags:
+                - Offers
+            summary: Egy rendelésrészlet törlése a details vektorból
+            description: Az elsődleges-kulccsal (id) kijelölt rendelés részleteinek törlése.
+            parameters:
+                - name: id
+                  in: path
+                  description: A rendelés azonosítója
+                  schema:
+                      type: string
+                      example: "eeee00000000000000000001"
+                  required: true
+                - name: detail_id
+                  in: path
+                  description: A details vektorból törlendő object azonosítója
+                  schema:
+                      type: string
+                      example: "ee0000000000000000000001"
+                  required: true
+            responses:
+                "200":
+                    description: OK
+                "4XX":
+                    description: Hiba
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "../exceptions/Http.exception.yml#/components/schemas/Error"

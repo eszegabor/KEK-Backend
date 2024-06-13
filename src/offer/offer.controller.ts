@@ -1,9 +1,11 @@
+import ProductNotFoundException from "exceptions/ProductNotFound.exception";
 import { NextFunction, Request, Response, Router } from "express";
 import { Schema, Types } from "mongoose";
 
 import HttpException from "../exceptions/Http.exception";
 import IdNotValidException from "../exceptions/IdNotValid.exception";
 import OfferNotFoundException from "../exceptions/OfferNotFount.exception";
+import OfferDetailNotFoundException from "../exceptions/OrderDetailNotFound.exception";
 import ReferenceErrorException from "../exceptions/ReferenceError.exception";
 import IController from "../interfaces/controller.interface";
 import IRequestWithUser from "../interfaces/requestWithUser.interface";
@@ -11,6 +13,7 @@ import ISession from "../interfaces/session.interface";
 import authMiddleware from "../middleware/auth.middleware";
 import validationMiddleware from "../middleware/validation.middleware";
 import orderModel from "../order/order.model";
+import productModel from "../product/product.model";
 import CreateOfferDto from "./offer.dto";
 import IOffer from "./offer.interface";
 import offerModel from "./offer.model";
@@ -20,6 +23,7 @@ export default class OfferController implements IController {
     public router = Router();
     private offer = offerModel;
     private order = orderModel;
+    private product = productModel;
 
     constructor() {
         this.initializeRoutes();
@@ -31,6 +35,7 @@ export default class OfferController implements IController {
         this.router.patch(`${this.path}/:id`, [authMiddleware, validationMiddleware(CreateOfferDto, true)], this.modifyOffer);
         this.router.post(this.path, [authMiddleware, validationMiddleware(CreateOfferDto)], this.createOffer);
         this.router.delete(`${this.path}/:id`, authMiddleware, this.deleteOffer);
+        this.router.delete(`${this.path}/:id/:detail_id`, authMiddleware, this.deleteFromDetails);
     }
 
     // LINK ./offer.controller.yml#getAllOffer
@@ -97,6 +102,15 @@ export default class OfferController implements IController {
                 ...offerData,
                 user_id: [uid],
             });
+
+            // check product(s)
+            for (const e of createdOffer.details) {
+                const product = await this.product.findOne({ _id: e.product_id });
+                if (!product) {
+                    next(new ProductNotFoundException(e.product_id.toString()));
+                    return;
+                }
+            }
             const savedOffer = await createdOffer.save();
             const count = await this.offer.countDocuments();
             res.append("x-total-count", `${count}`);
@@ -129,6 +143,30 @@ export default class OfferController implements IController {
             } else {
                 next(new IdNotValidException(id));
             }
+        } catch (error) {
+            next(new HttpException(400, error.message));
+        }
+    };
+    // LINK ./order.controller.yml#deleteFromDetails
+    // ANCHOR[id=deleteFromDetails]
+    private deleteFromDetails = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const id = req.params.id;
+            const detail_id = req.params.detail_id;
+            if (Types.ObjectId.isValid(id)) {
+                const offer = await this.offer.findOne({ _id: id });
+                if (offer) {
+                    const offerDetails = await this.offer.findOne({ $and: [{ _id: id }, { details: { $elemMatch: { _id: detail_id } } }] });
+                    if (offerDetails) {
+                        await this.offer.findOneAndUpdate({ _id: id }, { $pull: { details: { _id: detail_id } } });
+                        res.sendStatus(200);
+                    } else {
+                        next(new OfferDetailNotFoundException(detail_id));
+                    }
+                } else {
+                    next(new OfferNotFoundException(id));
+                }
+            } else next(new IdNotValidException(id));
         } catch (error) {
             next(new HttpException(400, error.message));
         }
