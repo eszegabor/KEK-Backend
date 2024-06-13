@@ -185,16 +185,14 @@ export default class OrderController implements IController {
             if (Types.ObjectId.isValid(id)) {
                 const order = await this.order.findOne({ _id: id });
                 if (order) {
-                    const orderDetails = await this.order.findOne({ $and: [{ _id: id }, { details: { $elemMatch: { _id: detail_id } } }] });
-                    if (orderDetails) {
-                        await this.order.findOneAndUpdate({ _id: id }, { $pull: { details: { _id: detail_id } } });
-                        res.sendStatus(200);
-                    } else {
-                        next(new OrderDetailNotFoundException(detail_id));
-                    }
-                } else {
-                    next(new OrderNotFoundException(id));
-                }
+                    if (Types.ObjectId.isValid(detail_id)) {
+                        const orderDetails = await this.order.findOne({ $and: [{ _id: id }, { details: { $elemMatch: { _id: detail_id } } }] });
+                        if (orderDetails) {
+                            await this.order.findOneAndUpdate({ _id: id }, { $pull: { details: { _id: detail_id } } });
+                            res.sendStatus(200);
+                        } else next(new OrderDetailNotFoundException(detail_id));
+                    } else next(new IdNotValidException(detail_id));
+                } else next(new OrderNotFoundException(id));
             } else next(new IdNotValidException(id));
         } catch (error) {
             next(new HttpException(400, error.message));
